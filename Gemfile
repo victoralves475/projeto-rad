@@ -63,6 +63,11 @@ group :test do
   gem "webdrivers", require: false
 end
 
+group :test do
+  gem "sqlite3", "~> 2.1"
+end
+
+
 # Windows (timezone)
 gem "tzinfo-data", platforms: %i[windows jruby]
 
