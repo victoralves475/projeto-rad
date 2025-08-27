@@ -1,5 +1,6 @@
 # app/services/pdfs/calculation_pdf.rb
 # frozen_string_literal: true
+
 require "prawn"
 require "prawn/table"
 
@@ -18,7 +19,7 @@ module Pdfs
 
         # Numeração de páginas
         pdf.number_pages "Página <page> de <total>",
-                         at: [pdf.bounds.right - 120, 0],
+                         at: [ pdf.bounds.right - 120, 0 ],
                          width: 120, align: :right, size: 9
       end.render
     end
@@ -65,13 +66,13 @@ module Pdfs
 
     def details_table(pdf)
       data = [
-        ["Processo",     @c.processo],
-        ["Crime",        @c.crime],
-        ["Pena",         @c.pena],
-        ["Data inicial", @c.start_date ? I18n.l(@c.start_date, format: :br) : "-"],
-        ["Idade",        @c.age.to_s],
-        ["Prescreve em", @c.expires_on ? I18n.l(@c.expires_on, format: :br) : "-"],
-        ["Resultado",    @c.result.to_s]
+        [ "Processo",     @c.processo ],
+        [ "Crime",        @c.crime ],
+        [ "Pena",         @c.pena ],
+        [ "Data inicial", @c.start_date ? I18n.l(@c.start_date, format: :br) : "-" ],
+        [ "Idade",        @c.age.to_s ],
+        [ "Prescreve em", @c.expires_on ? I18n.l(@c.expires_on, format: :br) : "-" ],
+        [ "Resultado",    @c.result.to_s ]
       ]
 
       # Deixa o rótulo (coluna 1) em negrito usando inline_format
@@ -79,8 +80,8 @@ module Pdfs
 
       pdf.table(
         data,
-        cell_style:   { padding: [6, 8, 6, 8], borders: [:bottom], border_width: 0.5, inline_format: true },
-        column_widths: [120, pdf.bounds.width - 120]
+        cell_style:   { padding: [ 6, 8, 6, 8 ], borders: [ :bottom ], border_width: 0.5, inline_format: true },
+        column_widths: [ 120, pdf.bounds.width - 120 ]
       )
       pdf.move_down 12
     end

@@ -4,7 +4,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-
     user ||= User.new # visitante
 
     if user.admin?
@@ -12,7 +11,7 @@ class Ability
     else
       # pode ler próprio dashboard etc.
       can :read, Calculation, user_id: user.id
-      can [:create, :show, :destroy], Calculation, user_id: user.id
+      can [ :create, :show, :destroy ], Calculation, user_id: user.id
 
       # usuários comuns não podem gerenciar usuários
       cannot :manage, User

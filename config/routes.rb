@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :calculations, only: [:new, :create, :show, :destroy] do
+  resources :calculations, only: [ :new, :create, :show, :destroy ] do
     member do
       get :download_pdf
     end
@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get "/dashboard", to: "dashboard#index", as: :dashboard
 
   namespace :admin do
-    resources :users, only: [:index] do
+    resources :users, only: [ :index ] do
       member do
         patch :suspend
         patch :reactivate

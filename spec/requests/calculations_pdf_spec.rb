@@ -13,6 +13,6 @@ RSpec.describe "Calculations PDF", type: :request do
     sign_in(user, scope: :user)
     get download_pdf_calculation_path(calc)
     expect(response.media_type).to eq("application/pdf")
-    expect(response.body.byteslice(0,4)).to eq("%PDF")
+    expect(response.body.byteslice(0, 4)).to eq("%PDF")
   end
 end

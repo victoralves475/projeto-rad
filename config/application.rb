@@ -8,7 +8,6 @@ Bundler.require(*Rails.groups)
 
 module Myapp
   class Application < Rails::Application
-
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
@@ -24,12 +23,11 @@ module Myapp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.i18n.available_locales = [:"pt-BR", :en]
+    config.i18n.available_locales = [ :"pt-BR", :en ]
     config.i18n.default_locale = :"pt-BR"
     config.time_zone = "America/Fortaleza" # opcional, mas útil
 
     config.autoload_paths << Rails.root.join("app/pdfs")
     config.eager_load_paths << Rails.root.join("app/pdfs")
-
   end
 end

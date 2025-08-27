@@ -1,5 +1,4 @@
 class Calculation < ApplicationRecord
-
   paginates_per 10
   max_paginates_per 100
 
@@ -33,5 +32,4 @@ class Calculation < ApplicationRecord
     self.expires_on = calc[:expires_on]
     self.result     = calc[:status]
   end
-
 end

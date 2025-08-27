@@ -37,7 +37,7 @@ class PrescricaoCalculator
     end
     # fallback: pega todos os inteiros e preenche y, m, d
     parts = pena_str.scan(/\d+/).map(&:to_i)
-    y, mm, dd = (parts + [0,0,0]).first(3)
+    y, mm, dd = (parts + [ 0, 0, 0 ]).first(3)
     y + (mm.to_f / 12.0) + (dd.to_f / 365.0)
   end
 

@@ -9,7 +9,7 @@ RSpec.describe Calculation, type: :model do
               processo: "00000001234567890123", # 20 dígitos
               crime: "Furto",
               pena:  "1 ano, 0 meses, 0 dias",
-              start_date: Date.new(2024,1,1),
+              start_date: Date.new(2024, 1, 1),
               age: 30
     )
     expect(c).to be_valid
@@ -23,7 +23,7 @@ RSpec.describe Calculation, type: :model do
               processo: "123",
               crime: "Furto",
               pena:  "1 ano, 0 meses, 0 dias",
-              start_date: Date.new(2024,1,1),
+              start_date: Date.new(2024, 1, 1),
               age: 30
     )
     expect(c).not_to be_valid
