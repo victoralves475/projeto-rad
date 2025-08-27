@@ -12,9 +12,15 @@ development:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", "app_development") %>
 
+#test:
+  #<<: *default
+  #database: <%= ENV.fetch("POSTGRES_DB_TEST", "app_test") %>
+  
 test:
-  <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB_TEST", "app_test") %>
+  adapter: sqlite3
+  database: storage/test.sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 production:
   <<: *default
