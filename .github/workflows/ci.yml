@@ -8,6 +8,8 @@ on:
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITH: "development test"   # garante brakeman/rubocop etc
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -19,17 +21,26 @@ jobs:
 
   scan_js:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITH: "development test"
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-      - name: Importmap audit
-        run: bin/importmap audit
+      - name: Importmap audit (if available)
+        run: |
+          if [ -x bin/importmap ]; then
+            bin/importmap audit
+          else
+            echo "bin/importmap não encontrado — pulando audit."
+          fi
 
   lint:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITH: "development test"
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -41,6 +52,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITH: "development test"
+      RAILS_ENV: test
     steps:
       - name: System packages (SQLite headers)
         run: |
@@ -53,12 +67,8 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
       - name: Prepare test DB
-        env:
-          RAILS_ENV: test
         run: bin/rails db:prepare
       - name: Run RSpec
-        env:
-          RAILS_ENV: test
         run: bundle exec rspec
       - name: Upload coverage artifact
         if: always()
