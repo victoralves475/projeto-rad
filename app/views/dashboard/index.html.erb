@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h5 mb-0">Histórico de cálculos</h1>
+  <%= link_to "Nova consulta", new_calculation_path, class: "btn btn-primary" %>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+        <tr>
+          <th>Processo</th>
+          <th>Crime</th>
+          <th>Pena</th>
+          <th>Data inicial</th>
+          <th>Idade</th>
+          <th>Prescreve em</th>
+          <th class="text-end">Resultado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @calculations.each do |c| %>
+          <tr>
+            <td><%= c.processo %></td>
+            <td><%= c.crime %></td>
+            <td><%= c.pena %></td>
+            <td><%= l(c.start_date) %></td>
+            <td><%= c.age %></td>
+            <td><%= c.expires_on.present? ? l(c.expires_on) : "-" %></td>
+            <td class="text-end">
+              <% if c.result == "Prescrito" %>
+                <span class="badge text-bg-danger">Prescrito</span>
+              <% else %>
+                <span class="badge text-bg-success">Não prescrito</span>
+              <% end %>
+
+              <%= link_to "Ver", calculation_path(c), class: "btn btn-sm btn-outline-secondary ms-2" %>
+
+              <%= link_to "Excluir",
+                          calculation_path(c),
+                          data: { turbo_method: :delete, turbo_confirm: "Confirma excluir esta consulta?" },
+                          class: "btn btn-sm btn-outline-danger ms-2" %>
+              <%= link_to "PDF",
+                          download_pdf_calculation_path(c),
+                          class: "btn btn-sm btn-outline-secondary ms-2",
+                          data: { turbo: false } %>
+            </td>
+
+          </tr>
+        <% end %>
+        <% if @calculations.empty? %>
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">Nenhum cálculo ainda.</td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="mt-3 d-flex justify-content-center">
+  <%= paginate @calculations %>
+</div>

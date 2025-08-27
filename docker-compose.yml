@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16
+    # se estiver em Mac M1/M2 e der erro de arquitetura, descomente:
+    # platform: "linux/amd64"
+    environment:
+      POSTGRES_DB: app_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+  web:
+    build: .
+    volumes:
+      - .:/myapp
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      POSTGRES_DB: app_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+
+volumes:
+  pgdata:
+  bundle_cache:

@@ -1,0 +1,92 @@
+<%= form_with model: @calculation,
+              class: "row g-3",
+              data: { controller: "form-guard", turbo: false, action: "input->form-guard#validate change->form-guard#validate" } do |f| %>
+
+  <!-- Processo (com sua máscara CNJ já instalada) -->
+  <div class="col-12 col-md-6">
+    <%= f.label :processo, "Processo", class: "form-label" %>
+    <%= f.text_field :processo,
+          class: "form-control",
+          placeholder: "0000000-00.0000.0.00.0000",
+          required: true,
+          data: {
+            processo_mask_target: "input", # (seu controller de máscara)
+            form_guard_target: "processo",
+            action: "input->form-guard#validate blur->form-guard#validate input->processo-mask#format blur->processo-mask#format",
+            controller: "processo-mask"
+          } %>
+    <div class="invalid-feedback">Informe um número CNJ válido.</div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <%= f.label :crime, "Crime", class: "form-label" %>
+    <%= f.text_field :crime,
+          class: "form-control",
+          required: true,
+          data: { form_guard_target: "crime" } %>
+    <div class="invalid-feedback">Informe o crime.</div>
+  </div>
+
+  <!-- Pena (anos / meses / dias) -->
+  <div class="col-12" data-controller="pena" data-action="input->pena#normalizeAndUpdate input->form-guard#validate change->form-guard#validate">
+    <label class="form-label d-block">Pena</label>
+    <div class="row g-2">
+      <div class="col-12 col-md-4">
+        <div class="input-group">
+          <span class="input-group-text">Anos</span>
+          <input type="number" min="0"
+                 class="form-control"
+                 data-pena-target="years"
+                 data-form-guard-target="years">
+          <div class="invalid-feedback">Preencha a pena (anos/meses/dias não podem ser todos zero).</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="input-group">
+          <span class="input-group-text">Meses</span>
+          <input type="number" min="0" max="11"
+                 class="form-control"
+                 data-pena-target="months"
+                 data-form-guard-target="months">
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="input-group">
+          <span class="input-group-text">Dias</span>
+          <input type="number" min="0" max="29"
+                 class="form-control"
+                 data-pena-target="days"
+                 data-form-guard-target="days">
+        </div>
+      </div>
+    </div>
+
+    <!-- Campo oculto real que será salvo em calculation[pena] (já existente) -->
+    <%= f.hidden_field :pena, data: { pena_target: "hidden" } %>
+    <small class="text-muted d-block mt-1">Pena: <span data-pena-target="preview"></span></small>
+  </div>
+
+  <div class="col-12 col-md-3">
+    <%= f.label :start_date, "Data inicial", class: "form-label" %>
+    <%= f.date_field :start_date,
+          class: "form-control",
+          required: true,
+          data: { form_guard_target: "startDate" } %>
+    <div class="invalid-feedback">Informe a data inicial.</div>
+  </div>
+
+  <div class="col-12 col-md-3">
+    <%= f.label :age, "Idade", class: "form-label" %>
+    <%= f.number_field :age,
+                       class: "form-control",
+                       min: 18,
+                       required: true,
+                       data: { form_guard_target: "age" } %>
+    <div class="invalid-feedback">Idade mínima: 18 anos.</div>
+  </div>
+
+  <div class="col-12 d-flex gap-2">
+    <%= f.submit "Calcular", class: "btn btn-primary", data: { form_guard_target: "submit" } %>
+    <%= link_to "Cancelar", authenticated_root_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>
