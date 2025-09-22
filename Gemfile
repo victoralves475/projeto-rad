@@ -64,7 +64,7 @@ group :test do
 end
 
 group :test do
-  gem "sqlite3", "~> 2.1"
+  gem "sqlite3", "~> 2.7"
 end
 
 
